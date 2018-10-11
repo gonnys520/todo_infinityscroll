@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>infinity scroll</title>
+</head>
+<body>
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        background-color: gainsboro;
+
+    }
+
+    .box {
+        width: 80%;
+        height: 800px;
+        margin-top: 80px;
+        background-color: aliceblue;
+        text-align: center;
+        /*공간이 남으면 스크롤X, 없으면 스크롤O 하는 기능이 아래와 같다*/
+        overflow: auto;
+    }
+
+    .item {
+/*        margin-bottom: -1px;*/
+        height: 200px;
+        /*border-box를 사용해야 외곽 포함한 40px 안하면 +2px*/
+        box-sizing: border-box;
+        border: 1px dotted lightsteelblue;
+        color: slategray;
+
+    }
+
+    .lightbox{
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        background-color: black;
+        z-index: 100;
+        opacity: 0.7;
+        display: none;
+    }
+
+    .spinner {
+        width: 75px;
+        height: 75px;
+        position: absolute;
+        top: 50%;
+        left: 53%;
+        margin-left: -100px;
+        margin-top: -100px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    }
+
+</style>
+
+
+<div class="container">
+
+    <div class="lightbox"><img src="spinner.gif" class="spinner"></div>
+
+    <div class="box">
+        <div class="item"><img src="samples/01.jpg"></div>
+        <div class="item"><img src="samples/02.jpg"></div>
+        <div class="item"><img src="samples/03.jpg"></div>
+        <div class="item"><img src="samples/04.jpg"></div>
+        <div class="item"><img src="samples/05.jpg"></div>
+        <div class="item"><img src="samples/11.jpg"></div>
+        <div class="item"><img src="samples/12.jpg"></div>
+        <div class="item"><img src="samples/13.jpg"></div>
+        <div class="item"><img src="samples/14.jpg"></div>
+        <div class="item"><img src="samples/15.jpg"></div>
+        <div class="item"><img src="samples/16.jpg"></div>
+        <div class="item"><img src="samples/17.jpg"></div>
+        <div class="item"><img src="samples/18.jpg"></div>
+
+        <div class="item">END</div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var box = $(".box");
+        var boxHeight = box.outerHeight();
+        var itemHeight = box.find(".item").first().outerHeight();
+        var lightBox = $(".lightbox");
+
+        box.scroll(function (e) {
+
+
+            //마지막 div 가져오기
+            var size = box.find(".item").length;
+            var scrollHeight = box.scrollTop();
+
+            if((boxHeight + scrollHeight) ===(size * itemHeight)){
+                console.log("End....");
+                addMore();
+            }
+
+            // var lastPos = parseInt(lastitem.offset().top) + parseInt(lastitem.outerHeight() );
+            //
+            // console.log(lastPos, box.scrollTop());
+        });
+
+        function addMore() {
+
+            lightBox.show();
+            setTimeout(function () {
+
+                for(var i = 0; i < 10; i++){
+                    box.append("<div class='item'><img src='samples/01.jpg'></div>");
+                }
+                lightBox.hide();
+
+            }, 1000);
+        }
+
+    });
+</script>
+</body>
+</html>
